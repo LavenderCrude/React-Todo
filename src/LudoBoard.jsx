@@ -7,7 +7,7 @@ export default function LudoBoard() {
   const updateMoves = (color) => {
     setMoves((prev) => ({ ...prev, [color]: prev[color] + 1 }));
     setArr((prev) => [...prev, `${color} Move`]);
-    console.log([arr]);
+
   };
 
   return (
