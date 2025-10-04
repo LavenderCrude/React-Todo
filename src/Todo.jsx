@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 function Todo() {
-  const [todos, setTodos] = useState([{ task: 'Coding', id: uuidv4() }]);
+  const [todos, setTodos] = useState([
+    { task: 'Coding', id: uuidv4(), isDone: false },
+  ]);
   const [newTodo, setNewTodo] = useState('');
 
   const addNewTask = () => {
     if (newTodo.trim()) {
-      setTodos((prev) => [...prev, { task: newTodo, id: uuidv4() }]);
+      setTodos((prev) => [
+        ...prev,
+        { task: newTodo, id: uuidv4(), isDone: false },
+      ]);
       setNewTodo('');
     }
   };
@@ -16,15 +21,37 @@ function Todo() {
     setTodos((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const UpperCase = () => {
+  // const UpperCase = () => {
+  //   setTodos((prev) =>
+  //     prev.map((todo) => ({
+  //       ...todo,
+  //       task: todo.task.toUpperCase(),
+  //     }))
+  //   );
+  // };
+
+  const markAll = () => {
     setTodos((prev) =>
       prev.map((todo) => ({
         ...todo,
-        task: todo.task.toUpperCase(),
+        isDone: false,
       }))
     );
   };
 
+  // const updateUpperCase = (id) => {
+  //   setTodos((prev) =>
+  //     prev.map((todo) =>
+  //       todo.id === id ? { ...todo, task: todo.task.toUpperCase() } : todo
+  //     )
+  //   );
+  // };
+
+  const markAsDone = (id) => {
+    setTodos((prev) =>
+      prev.map((todo) => (todo.id === id ? { ...todo, isDone: true } : todo))
+    );
+  };
   return (
     <div
       style={{
@@ -97,12 +124,25 @@ function Todo() {
             >
               Delete
             </button>
+            <button
+              style={{
+                backgroundColor: '#0a8408ff',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '5px',
+                padding: '4px 8px',
+                cursor: 'pointer',
+              }}
+              onClick={() => markAsDone(t.id)}
+            >
+              Mark Done
+            </button>
           </li>
         ))}
       </ul>
       <hr />
       <br />
-      <button onClick={UpperCase}>UpperCase All</button>
+      <button onClick={markAll}>Mark Done All</button>
     </div>
   );
 }
