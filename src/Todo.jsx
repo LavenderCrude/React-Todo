@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import './Todo.css'; // import the CSS
 
 function Todo() {
   const [todos, setTodos] = useState([
@@ -31,12 +32,7 @@ function Todo() {
   // };
 
   const markAll = () => {
-    setTodos((prev) =>
-      prev.map((todo) => ({
-        ...todo,
-        isDone: false,
-      }))
-    );
+    setTodos((prev) => prev.map((todo) => ({ ...todo, isDone: true })));
   };
 
   // const updateUpperCase = (id) => {
@@ -52,87 +48,36 @@ function Todo() {
       prev.map((todo) => (todo.id === id ? { ...todo, isDone: true } : todo))
     );
   };
+
   return (
-    <div
-      style={{
-        fontFamily: 'Arial, sans-serif',
-        textAlign: 'center',
-        marginTop: '20px',
-      }}
-    >
-      <h1 style={{ color: '#4CAF50' }}>Add Todo</h1>
+    <div className="todo-container">
+      <h1>Add Todo</h1>
 
       <input
         type="text"
         placeholder="Enter Task"
         value={newTodo}
         onChange={(e) => setNewTodo(e.target.value)}
-        style={{
-          padding: '8px',
-          fontSize: '16px',
-          border: '1px solid #ccc',
-          borderRadius: '5px',
-          marginRight: '10px',
-        }}
+        className="todo-input"
       />
-      <button
-        onClick={addNewTask}
-        style={{
-          padding: '8px 12px',
-          fontSize: '16px',
-          backgroundColor: '#4CAF50',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-        }}
-      >
+      <button onClick={addNewTask} className="todo-add-btn">
         Add
       </button>
 
-      <ul style={{ listStyle: 'none', padding: 0, marginTop: '20px' }}>
+      <ul className="todo-list">
         {todos.map((t) => (
-          <li
-            key={t.id}
-            style={{
-              margin: '10px 0',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: '10px',
-            }}
-          >
-            <span
-              style={{
-                fontSize: '18px',
-                fontWeight: '500',
-                color: '#333',
-              }}
-            >
+          <li key={t.id} className="todo-item">
+            <span className={`todo-task ${t.isDone ? 'done' : ''}`}>
               {t.task}
             </span>
             <button
-              style={{
-                backgroundColor: '#ff4d4d',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '5px',
-                padding: '4px 8px',
-                cursor: 'pointer',
-              }}
+              className="todo-btn todo-delete-btn"
               onClick={() => deleteTask(t.id)}
             >
               Delete
             </button>
             <button
-              style={{
-                backgroundColor: '#0a8408ff',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '5px',
-                padding: '4px 8px',
-                cursor: 'pointer',
-              }}
+              className="todo-btn todo-done-btn"
               onClick={() => markAsDone(t.id)}
             >
               Mark Done
@@ -140,9 +85,12 @@ function Todo() {
           </li>
         ))}
       </ul>
+
       <hr />
       <br />
-      <button onClick={markAll}>Mark Done All</button>
+      <button onClick={markAll} className="mark-all-btn">
+        Mark Done All
+      </button>
     </div>
   );
 }
